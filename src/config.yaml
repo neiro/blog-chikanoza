@@ -1,6 +1,6 @@
 site:
-  name: AstroWind
-  site: 'https://astrowind.vercel.app'
+  name: Vyacheslav Redkin
+  site: 'https://chikanoza.com' # замени на реальный домен, когда будет
   base: '/'
   trailingSlash: false
 
@@ -9,22 +9,27 @@ site:
 # Default SEO metadata
 metadata:
   title:
-    default: AstroWind
-    template: '%s — AstroWind'
-  description: "\U0001F680 Suitable for Startups, Small Business, Sass Websites, Professional Portfolios, Marketing Websites, Landing Pages & Blogs."
+    default: Vyacheslav Redkin
+    template: '%s — Vyacheslav Redkin'
+  description: >
+    Backend / Platform Engineer.
+    Building APIs, distributed systems, and self-hosted infrastructure.
+    .NET, PostgreSQL, Docker, Kafka, and pragmatic system design.
   robots:
     index: true
     follow: true
+
   openGraph:
-    site_name: AstroWind
+    site_name: Vyacheslav Redkin
     images:
       - url: '~/assets/images/default.png'
         width: 1200
         height: 628
     type: website
+
   twitter:
-    handle: '@arthelokyo'
-    site: '@arthelokyo'
+    handle: '@chikanoza'
+    site: '@chikanoza'
     cardType: summary_large_image
 
 i18n:
@@ -38,25 +43,25 @@ apps:
 
     post:
       isEnabled: true
-      permalink: '/%slug%' # Variables: %slug%, %year%, %month%, %day%, %hour%, %minute%, %second%, %category%
+      permalink: '/%slug%'
       robots:
         index: true
 
     list:
       isEnabled: true
-      pathname: 'blog' # Blog main path, you can change this to "articles" (/articles)
+      pathname: 'blog'
       robots:
         index: true
 
     category:
       isEnabled: true
-      pathname: 'category' # Category main path /category/some-category, you can change this to "group" (/group/some-category)
+      pathname: 'category'
       robots:
         index: true
 
     tag:
       isEnabled: true
-      pathname: 'tag' # Tag main path /tag/some-tag, you can change this to "topics" (/topics/some-category)
+      pathname: 'tag'
       robots:
         index: false
 
@@ -66,7 +71,7 @@ apps:
 analytics:
   vendors:
     googleAnalytics:
-      id: null # or "G-XXXXXXXXXX"
+      id: null # лучше подключать позже и осознанно
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'system'
