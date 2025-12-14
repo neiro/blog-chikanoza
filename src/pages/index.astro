@@ -23,11 +23,9 @@ const metadata = {
       links={[
         { text: 'Home', href: '#hero' },
         { text: 'About', href: '#about' },
-        { text: 'Blog', href: '#blog' }
+        { text: 'Blog', href: '#blog' },
       ]}
-      actions={[
-        { text: 'Contact me', href: '#contact' },
-      ]}
+      actions={[{ text: 'Contact me', href: '#contact' }]}
       isSticky
       showToggleTheme
     />
@@ -39,12 +37,11 @@ const metadata = {
     id="hero"
     title="Vyacheslav Redkin"
     tagline="Backend / Platform Engineer"
-    actions={[
-      { variant: 'primary', text: 'Get in touch', href: getPermalink('/contact#form') },
-    ]}
+    actions={[{ variant: 'primary', text: 'Get in touch', href: getPermalink('/contact#form') }]}
   >
     <Fragment slot="subtitle">
-      I build backend systems, APIs, and self-hosted platforms — the kind that don’t collapse the moment someone refreshes twice. <br />
+      I build backend systems, APIs, and self-hosted platforms — the kind that don’t collapse the moment someone
+      refreshes twice. <br />
       Mostly .NET, distributed systems, automation, and pragmatic engineering (a.k.a. “boring in the best way”).
     </Fragment>
   </Hero>
@@ -87,21 +84,18 @@ const metadata = {
     }}
   >
     <Fragment slot="content">
-      <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        About me
-      </h2>
+      <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">About me</h2>
 
       <p>
-        I’m a software engineer who likes building systems that stay understandable,
-        predictable, and maintainable years after launch — not just “works on my machine”
-        levels of confidence.
+        I’m a software engineer who likes building systems that stay understandable, predictable, and maintainable years
+        after launch — not just “works on my machine” levels of confidence.
       </p>
 
       <br />
 
       <p>
-        I care about the full lifecycle: how a system is deployed, monitored, backed up,
-        and lived with. If something breaks at 3 AM, I prefer it to break <em>politely</em>
+        I care about the full lifecycle: how a system is deployed, monitored, backed up, and lived with. If something
+        breaks at 3 AM, I prefer it to break <em>politely</em>
         with logs, metrics, and a clear reason.
       </p>
 
@@ -109,23 +103,23 @@ const metadata = {
 
       <p>
         My primary stack is <strong>.NET</strong>, <strong>PostgreSQL</strong>,
-        <strong>Docker</strong>, <strong>Kafka / RabbitMQ</strong>, and <strong>Redis</strong>.
-        On the frontend I occasionally use <strong>Nuxt 3</strong> when a project needs a clean, modern UI.
+        <strong>Docker</strong>, <strong>Kafka / RabbitMQ</strong>, and <strong>Redis</strong>. On the frontend I
+        occasionally use <strong>Nuxt 3</strong> when a project needs a clean, modern UI.
       </p>
 
       <br />
 
       <p>
-        Outside of programming: I’m a family person, I love traveling, exploring cities (especially at night),
-        taking photos, and building self-hosted home infrastructure — media servers, backups, automations,
-        and “smart” things that don’t require a cloud subscription to turn on a light.
+        Outside of programming: I’m a family person, I love traveling, exploring cities (especially at night), taking
+        photos, and building self-hosted home infrastructure — media servers, backups, automations, and “smart” things
+        that don’t require a cloud subscription to turn on a light.
       </p>
 
       <br />
 
       <p>
-        I value independence, open-source, and solutions that don’t lock you in.
-        Simple beats clever — because clever has a habit of turning into “why is this here?” six months later.
+        I value independence, open-source, and solutions that don’t lock you in. Simple beats clever — because clever
+        has a habit of turning into “why is this here?” six months later.
       </p>
     </Fragment>
 
@@ -141,8 +135,7 @@ const metadata = {
     title="Professional experience"
     items={[
       {
-        title:
-          'Backend / Platform Engineer <br /> <span class="font-normal">Distributed systems & APIs</span>',
+        title: 'Backend / Platform Engineer <br /> <span class="font-normal">Distributed systems & APIs</span>',
         description: `
           Designing and implementing backend services using .NET. <br />
           Building secure APIs (JWT + API keys) for external clients. <br />
@@ -219,8 +212,7 @@ const metadata = {
       },
       {
         title: 'Highlights:',
-        description:
-          'JWT + API keys, Kafka/RabbitMQ, PostgreSQL, Redis, Docker Compose, self-hosted deployment.',
+        description: 'JWT + API keys, Kafka/RabbitMQ, PostgreSQL, Redis, Docker Compose, self-hosted deployment.',
       },
     ]}
     image={{
@@ -247,9 +239,7 @@ const metadata = {
   <CallToAction
     title="Let’s build something solid"
     subtitle="If you value clarity, reliability, and long-term thinking — we’ll get along just fine."
-    actions={[
-      { variant: 'primary', text: 'Contact me', href: '#contact' },
-    ]}
+    actions={[{ variant: 'primary', text: 'Contact me', href: '#contact' }]}
   />
 
   <!-- Blog -->

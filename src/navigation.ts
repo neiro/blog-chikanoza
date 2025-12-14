@@ -1,13 +1,13 @@
-import { getPermalink, getBlogPermalink, getAsset } from "./utils/permalinks";
+import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 
-const SITE_OWNER = "Chikanoza"; // <-- your name/brand
-const SITE_TAGLINE = "Personal blog & photo/video archive";
+const SITE_OWNER = 'Chikanoza'; // <-- your name/brand
+const SITE_TAGLINE = 'Personal blog & photo/video archive';
 
 export const headerData = {
   links: [
-    { text: "Home", href: getPermalink("/") },
-    { text: "Blog", href: getBlogPermalink() },
-    { text: "About", href: getPermalink("/about") },
+    { text: 'Home', href: getPermalink('/') },
+    { text: 'Blog', href: getBlogPermalink() },
+    { text: 'About', href: getPermalink('/about') },
     // Optional:
     // { text: "Archive", href: getPermalink("/archive") },
     // { text: "Photos", href: getPermalink("/photos") },
@@ -21,25 +21,25 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: "Site",
+      title: 'Site',
       links: [
-        { text: "Home", href: getPermalink("/") },
-        { text: "Blog", href: getBlogPermalink() },
-        { text: "About", href: getPermalink("/about") },
+        { text: 'Home', href: getPermalink('/') },
+        { text: 'Blog', href: getBlogPermalink() },
+        { text: 'About', href: getPermalink('/about') },
         // { text: "Archive", href: getPermalink("/archive") },
       ],
     },
     {
-      title: "Social",
+      title: 'Social',
       links: [
         // Put your real links here:
-        { text: "Instagram", href: "https://instagram.com/chikanoza" },
-        { text: "YouTube", href: "https://youtube.com/@VyacheslavRedkin" },
+        { text: 'Instagram', href: 'https://instagram.com/chikanoza' },
+        { text: 'YouTube', href: 'https://youtube.com/@VyacheslavRedkin' },
       ],
     },
     {
-      title: "Feeds",
-      links: [{ text: "RSS", href: getAsset("/rss.xml") }],
+      title: 'Feeds',
+      links: [{ text: 'RSS', href: getAsset('/rss.xml') }],
     },
   ],
 
@@ -51,9 +51,9 @@ export const footerData = {
 
   socialLinks: [
     // Keep icons you actually use — remove the rest.
-    { ariaLabel: "Instagram", icon: "tabler:brand-instagram", href: "https://instagram.com/chikanoza" },
-    { ariaLabel: "YouTube", icon: "tabler:brand-youtube", href: "https://youtube.com/@VyacheslavRedkin" },
-    { ariaLabel: "RSS", icon: "tabler:rss", href: getAsset("/rss.xml") },
+    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: 'https://instagram.com/chikanoza' },
+    { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://youtube.com/@VyacheslavRedkin' },
+    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
 
   footNote: `
