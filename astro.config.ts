@@ -7,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import partytown from '@astrojs/partytown';
+import remarkGfm from 'remark-gfm';
 import icon from 'astro-icon';
 import compress from 'astro-compress';
 import type { AstroIntegration } from 'astro';
@@ -29,7 +30,10 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     sitemap(),
-    mdx(),
+    mdx({
+      remarkPlugins: [remarkGfm, readingTimeRemarkPlugin],
+      rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
+    }),
     icon({
       include: {
         tabler: ['*'],
@@ -76,7 +80,7 @@ export default defineConfig({
   },
 
   markdown: {
-    remarkPlugins: [readingTimeRemarkPlugin],
+    remarkPlugins: [remarkGfm, readingTimeRemarkPlugin],
     rehypePlugins: [responsiveTablesRehypePlugin, lazyImagesRehypePlugin],
   },
 
