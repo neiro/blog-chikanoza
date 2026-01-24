@@ -6,12 +6,12 @@ import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
-import { contentDefaultLocale, getDictionary, getLocaleFromUrl } from '~/i18n';
+import { getDictionary, getLocaleFromUrl } from '~/i18n';
 
 export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
-  return await getStaticPathsBlogTag({ paginate, locale: 'en' });
+  return await getStaticPathsBlogTag({ paginate });
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -21,7 +21,13 @@ const locale = getLocaleFromUrl(Astro.url);
 const dict = getDictionary(locale);
 
 const currentPage = page.currentPage ?? 1;
-const localizedPosts = page.data.filter((post) => (post.lang ?? contentDefaultLocale) === locale);
+const langParam = Astro.url.searchParams.get('lang') ?? 'all';
+const query = langParam && langParam !== 'all' ? `?lang=${langParam}` : '';
+const filterLinks = [
+  { label: dict.blog.filterAll, value: 'all', href: `${Astro.url.pathname}` },
+  { label: dict.blog.filterRu, value: 'ru', href: `${Astro.url.pathname}?lang=ru` },
+  { label: dict.blog.filterEn, value: 'en', href: `${Astro.url.pathname}?lang=en` },
+];
 
 const metadata = {
   title: `${dict.blog.listTitle} — ${tag.title}${currentPage > 1 ? ` — ${dict.blog.pageLabel} ${currentPage}` : ''}`,
@@ -35,7 +41,36 @@ const metadata = {
 <Layout metadata={metadata}>
   <section class="px-4 md:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
     <Headline>{tag.title}</Headline>
-    <BlogList posts={localizedPosts} locale={locale} />
-    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} locale={locale} />
+    <div class="flex items-center justify-center gap-3 mb-8 text-sm">
+      {
+        filterLinks.map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              'px-3 py-1 rounded-full border border-gray-200 dark:border-slate-700',
+              {
+                'text-primary border-primary dark:text-white dark:border-slate-500': link.value === langParam,
+                'text-muted dark:text-slate-400': link.value !== langParam,
+              },
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </div>
+    <BlogList posts={page.data} locale={locale} />
+    <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} locale={locale} query={query} />
   </section>
 </Layout>
+
+<script is:inline>
+  (function () {
+    const params = new URL(window.location.href).searchParams;
+    const lang = params.get('lang');
+    if (!lang || lang === 'all') return;
+    document.querySelectorAll('[data-lang]').forEach((el) => {
+      if (el.dataset.lang !== lang) el.style.display = 'none';
+    });
+  })();
+</script>

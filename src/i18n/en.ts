@@ -170,6 +170,9 @@ Designing systems with performance, observability, and long-term support in mind
     newer: 'Newer posts',
     older: 'Older posts',
     minRead: 'min read',
+    filterAll: 'All',
+    filterRu: 'RU',
+    filterEn: 'EN',
   },
   notFound: {
     title: 'Page not found',

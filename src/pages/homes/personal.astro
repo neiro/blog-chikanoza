@@ -10,10 +10,14 @@ import Testimonials from '~/components/widgets/Testimonials.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import { getPermalink } from '~/utils/permalinks';
+import { getLocaleFromUrl, getLocaleSwitchLinks } from '~/i18n';
 
 const metadata = {
   title: 'Personal Homepage Demo',
 };
+
+const locale = getLocaleFromUrl(Astro.url);
+const languageLinks = getLocaleSwitchLinks(Astro.url);
 ---
 
 <Layout metadata={metadata}>
@@ -34,6 +38,7 @@ const metadata = {
           href: '#',
         },
       ]}
+      languageLinks={languageLinks}
       isSticky
       showToggleTheme
     />

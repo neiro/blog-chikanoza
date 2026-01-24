@@ -9,7 +9,7 @@ import Content from '~/components/widgets/Content.astro';
 import Pricing from '~/components/widgets/Pricing.astro';
 
 import { getHeaderData } from '~/navigation';
-import { getLocaleFromUrl } from '~/i18n';
+import { getLocaleFromUrl, getLocaleSwitchLinks } from '~/i18n';
 import FAQs from '~/components/widgets/FAQs.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 
@@ -19,6 +19,7 @@ const metadata = {
 
 const locale = getLocaleFromUrl(Astro.url);
 const headerData = getHeaderData(locale);
+const languageLinks = getLocaleSwitchLinks(Astro.url);
 ---
 
 <Layout metadata={metadata}>
@@ -37,6 +38,7 @@ const headerData = getHeaderData(locale);
           href: '#',
         },
       ]}
+      languageLinks={languageLinks}
       isSticky
     />
   </Fragment>

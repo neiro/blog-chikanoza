@@ -9,9 +9,10 @@ export interface Props {
   prevText?: string;
   nextText?: string;
   locale?: Locale;
+  query?: string;
 }
 
-const { prevUrl, nextUrl, prevText, nextText, locale } = Astro.props;
+const { prevUrl, nextUrl, prevText, nextText, locale, query = '' } = Astro.props;
 const prevLabel = prevText ?? t('blog.newer', locale ?? 'en');
 const nextLabel = nextText ?? t('blog.older', locale ?? 'en');
 ---
@@ -23,7 +24,7 @@ const nextLabel = nextText ?? t('blog.older', locale ?? 'en');
         <Button
           variant="tertiary"
           class={`md:px-3 px-3 mr-2 ${!prevUrl ? 'invisible' : ''}`}
-          href={prevUrl ? localizePath(stripLocaleFromPath(prevUrl), locale ?? 'en') : '#'}
+          href={prevUrl ? `${localizePath(stripLocaleFromPath(prevUrl), locale ?? 'en')}${query}` : '#'}
         >
           <Icon name="tabler:chevron-left" class="w-6 h-6" />
           <p class="ml-2">{prevLabel}</p>
@@ -32,7 +33,7 @@ const nextLabel = nextText ?? t('blog.older', locale ?? 'en');
         <Button
           variant="tertiary"
           class={`md:px-3 px-3 ${!nextUrl ? 'invisible' : ''}`}
-          href={nextUrl ? localizePath(stripLocaleFromPath(nextUrl), locale ?? 'en') : '#'}
+          href={nextUrl ? `${localizePath(stripLocaleFromPath(nextUrl), locale ?? 'en')}${query}` : '#'}
         >
           <span class="mr-2">{nextLabel}</span>
           <Icon name="tabler:chevron-right" class="w-6 h-6" />

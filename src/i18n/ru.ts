@@ -148,6 +148,9 @@ PostgreSQL, Redis, Kafka и RabbitMQ в реальных нагрузках. <br
     newer: 'Новые',
     older: 'Старые',
     minRead: 'мин чтения',
+    filterAll: 'Все',
+    filterRu: 'RU',
+    filterEn: 'EN',
   },
   notFound: {
     title: 'Страница не найдена',

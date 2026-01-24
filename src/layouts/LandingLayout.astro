@@ -3,7 +3,7 @@ import PageLayout from '~/layouts/PageLayout.astro';
 import Header from '~/components/widgets/Header.astro';
 
 import { getHeaderData } from '~/navigation';
-import { getLocaleFromUrl } from '~/i18n';
+import { getLocaleFromUrl, getLocaleSwitchLinks } from '~/i18n';
 import type { MetaData } from '~/types';
 
 export interface Props {
@@ -13,6 +13,7 @@ export interface Props {
 const { metadata } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 const headerData = getHeaderData(locale);
+const languageLinks = getLocaleSwitchLinks(Astro.url);
 ---
 
 <PageLayout metadata={metadata}>
@@ -29,6 +30,7 @@ const headerData = getHeaderData(locale);
             href: 'https://github.com/arthelokyo/astrowind',
           },
         ]}
+        languageLinks={languageLinks}
         showToggleTheme
         position="right"
       />

@@ -13,6 +13,7 @@ import Stats from '~/components/widgets/Stats.astro';
 
 import Button from '~/components/ui/Button.astro';
 import Image from '~/components/common/Image.astro';
+import { getLocaleSwitchLinks } from '~/i18n';
 
 const appStoreImg = '~/assets/images/app-store.png';
 const appStoreDownloadLink = 'https://github.com/arthelokyo/astrowind';
@@ -23,6 +24,8 @@ const googlePlayDownloadLink = 'https://github.com/arthelokyo/astrowind';
 const metadata = {
   title: 'Mobile App Homepage',
 };
+
+const languageLinks = getLocaleSwitchLinks(Astro.url);
 ---
 
 <Layout metadata={metadata}>
@@ -41,6 +44,7 @@ const metadata = {
           href: '#download',
         },
       ]}
+      languageLinks={languageLinks}
       isSticky
       showToggleTheme
     />
