@@ -76,12 +76,22 @@ const metadata = {
 </Layout>
 
 <script is:inline>
-  (function () {
+  const applyLangFilter = () => {
     const params = new URL(window.location.href).searchParams;
     const lang = params.get('lang');
-    if (!lang || lang === 'all') return;
-    document.querySelectorAll('[data-lang]').forEach((el) => {
-      if (el.dataset.lang !== lang) el.style.display = 'none';
+    const nodes = document.querySelectorAll('[data-lang]');
+    if (!lang || lang === 'all') {
+      nodes.forEach((el) => {
+        el.style.display = '';
+      });
+      return;
+    }
+    nodes.forEach((el) => {
+      el.style.display = el.dataset.lang === lang ? '' : 'none';
     });
-  })();
+  };
+
+  applyLangFilter();
+  document.addEventListener('astro:page-load', applyLangFilter);
+  document.addEventListener('astro:after-swap', applyLangFilter);
 </script>
