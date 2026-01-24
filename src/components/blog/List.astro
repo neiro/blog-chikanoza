@@ -1,6 +1,7 @@
 ---
 import Item from '~/components/blog/ListItem.astro';
 import type { Post } from '~/types';
+import { contentDefaultLocale } from '~/i18n';
 
 export interface Props {
   posts: Array<Post>;
@@ -13,7 +14,7 @@ const { posts, locale } = Astro.props;
 <ul>
   {
     posts.map((post) => (
-      <li class="mb-12 md:mb-20">
+      <li class="mb-12 md:mb-20" data-lang={post.lang ?? contentDefaultLocale}>
         <Item post={post} locale={locale} />
       </li>
     ))
