@@ -53,13 +53,8 @@ const metadata = {
         filterLinks.map((link) => (
           <a
             href={link.href}
-            class:list={[
-              'px-3 py-1 rounded-full border border-gray-200 dark:border-slate-700',
-              {
-                'text-primary border-primary dark:text-white dark:border-slate-500': link.value === langParam,
-                'text-muted dark:text-slate-400': link.value !== langParam,
-              },
-            ]}
+            data-lang-filter={link.value}
+            class="filter-link px-3 py-1 rounded-full border border-gray-200 dark:border-slate-700 text-muted dark:text-slate-400"
           >
             {link.label}
           </a>
@@ -76,18 +71,32 @@ const metadata = {
 </Layout>
 
 <script is:inline>
+  const ACTIVE_CLASSES = ['text-primary', 'border-primary', 'dark:text-white', 'dark:border-slate-500'];
+  const INACTIVE_CLASSES = ['text-muted', 'dark:text-slate-400'];
+
   const applyLangFilter = () => {
     const params = new URL(window.location.href).searchParams;
-    const lang = params.get('lang');
+    const lang = params.get('lang') || 'all';
     const nodes = document.querySelectorAll('[data-lang]');
-    if (!lang || lang === 'all') {
+    if (lang === 'all') {
       nodes.forEach((el) => {
         el.style.display = '';
       });
-      return;
+    } else {
+      nodes.forEach((el) => {
+        el.style.display = el.dataset.lang === lang ? '' : 'none';
+      });
     }
-    nodes.forEach((el) => {
-      el.style.display = el.dataset.lang === lang ? '' : 'none';
+
+    document.querySelectorAll('[data-lang-filter]').forEach((el) => {
+      const isActive = el.dataset.langFilter === lang;
+      ACTIVE_CLASSES.forEach((cls) => el.classList.toggle(cls, isActive));
+      INACTIVE_CLASSES.forEach((cls) => el.classList.toggle(cls, !isActive));
+      if (isActive) {
+        el.setAttribute('aria-current', 'page');
+      } else {
+        el.removeAttribute('aria-current');
+      }
     });
   };
 
