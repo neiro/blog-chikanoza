@@ -119,7 +119,7 @@ PostgreSQL, Redis, Kafka и RabbitMQ в реальных нагрузках. <br
         icon: 'tabler:activity',
       },
       { title: 'Автоматизация', description: 'Повторяемые деплои и надёжные окружения.', icon: 'tabler:robot' },
-      { title: 'Системный дизайн', description: 'Отказы, масштабирование и поддержка.', icon: 'tabler:diagram-3' },
+      { title: 'Системный дизайн', description: 'Отказы, масштабирование и поддержка.', icon: 'tabler:git-branch' },
       { title: 'Прагматизм', description: 'Простое лучше хитрого — пусть future‑me понимает.', icon: 'tabler:tool' },
       { title: 'Иногда фронтенд', description: 'Nuxt 3, когда нужен чистый современный UI.', icon: 'tabler:layout' },
     ],

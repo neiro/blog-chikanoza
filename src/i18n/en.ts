@@ -126,7 +126,7 @@ Designing systems with performance, observability, and long-term support in mind
       {
         title: 'System design',
         description: 'Failure modes, scaling plans, and long-term maintenance.',
-        icon: 'tabler:diagram-3',
+        icon: 'tabler:git-branch',
       },
       {
         title: 'Pragmatism',
