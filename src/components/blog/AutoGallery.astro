@@ -1,0 +1,76 @@
+---
+import Image from '~/components/common/Image.astro';
+
+export interface Props {
+  /** путь от /public, например: /images/korea/day1 */
+  dir: string;
+  columns?: 2 | 3 | 4;
+  fullBleed?: boolean;
+}
+
+const { dir, columns = 3, fullBleed = false } = Astro.props;
+
+/**
+ * Берём все картинки из public через glob.
+ * ВАЖНО: путь должен быть абсолютным от /public
+ */
+const images = Object.entries(import.meta.glob('/public/**/*.{jpg,jpeg,png,webp,avif}', { eager: true }))
+  .filter(([path]) => path.startsWith(`/public${dir}/`))
+  .map(([path]) => {
+    const src = path.replace('/public', '');
+    const name =
+      src
+        .split('/')
+        .pop()
+        ?.replace(/\.(jpg|jpeg|png|webp|avif)$/i, '') ?? '';
+    return { src, alt: name };
+  })
+  .sort((a, b) => a.src.localeCompare(b.src));
+
+const isSingle = images.length === 1;
+
+const colsClass =
+  columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-2 sm:grid-cols-3';
+
+const wrapperClass = fullBleed ? 'my-6 -mx-6 sm:-mx-10' : 'my-6';
+---
+
+{images.length === 0 && <div class="my-6 text-sm text-red-500">Нет изображений в папке: {dir}</div>}
+
+{
+  isSingle && images[0] && (
+    <figure class={wrapperClass}>
+      <Image
+        src={images[0].src}
+        alt={images[0].alt}
+        width={1600}
+        height={1000}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-auto rounded-md shadow-lg"
+      />
+    </figure>
+  )
+}
+
+{
+  !isSingle && images.length > 1 && (
+    <div class={wrapperClass}>
+      <div class={`grid ${colsClass} gap-3`}>
+        {images.map((img) => (
+          <a href={img.src} target="_blank" rel="noreferrer" class="block">
+            <Image
+              src={img.src}
+              alt={img.alt}
+              width={1200}
+              height={800}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-auto rounded-md shadow-lg"
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  )
+}

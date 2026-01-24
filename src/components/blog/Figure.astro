@@ -1,0 +1,41 @@
+---
+import Image from '~/components/common/Image.astro';
+
+export interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync' | 'auto';
+  // если хочешь "шире текста"
+  fullBleed?: boolean;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  width = 1400,
+  height = 900,
+  loading = 'lazy',
+  decoding = 'async',
+  fullBleed = false,
+} = Astro.props;
+
+const wrapperClass = fullBleed ? 'my-6 -mx-6 sm:-mx-10' : 'my-6';
+---
+
+<figure class={wrapperClass}>
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    class="w-full h-auto rounded-md shadow-lg"
+  />
+  {caption && <figcaption class="mt-2 text-sm text-muted dark:text-slate-400">{caption}</figcaption>}
+</figure>

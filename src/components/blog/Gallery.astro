@@ -1,0 +1,48 @@
+---
+import Image from '~/components/common/Image.astro';
+
+export type GalleryItem = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+
+export interface Props {
+  images: GalleryItem[];
+  columns?: 2 | 3 | 4;
+  gap?: 'sm' | 'md' | 'lg';
+  fullBleed?: boolean;
+}
+
+const { images, columns = 3, gap = 'md', fullBleed = false } = Astro.props;
+
+const colsClass =
+  columns === 2 ? 'grid-cols-2' : columns === 4 ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-2 sm:grid-cols-3';
+
+const gapClass = gap === 'sm' ? 'gap-2' : gap === 'lg' ? 'gap-4' : 'gap-3';
+
+const wrapperClass = fullBleed ? 'my-6 -mx-6 sm:-mx-10' : 'my-6';
+---
+
+<div class={wrapperClass}>
+  <div class={`grid ${colsClass} ${gapClass}`}>
+    {
+      images.map((img) => (
+        <a href={img.src} target="_blank" rel="noreferrer" class="block">
+          <Image
+            src={img.src}
+            alt={img.alt}
+            width={img.width ?? 1200}
+            height={img.height ?? 800}
+            loading="lazy"
+            decoding="async"
+            class="w-full h-auto rounded-md shadow-lg"
+          />
+          {img.caption && <div class="mt-1 text-xs text-muted dark:text-slate-400">{img.caption}</div>}
+        </a>
+      ))
+    }
+  </div>
+</div>
