@@ -151,6 +151,7 @@ PostgreSQL, Redis, Kafka и RabbitMQ в реальных нагрузках. <br
     filterAll: 'Все',
     filterRu: 'RU',
     filterEn: 'EN',
+    filterEmpty: 'Пока нет постов на выбранном языке.',
   },
   notFound: {
     title: 'Страница не найдена',

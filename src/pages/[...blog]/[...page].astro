@@ -61,6 +61,13 @@ const metadata = {
         ))
       }
     </div>
+    <p
+      id="lang-empty"
+      class="hidden mb-10 text-center text-sm text-muted dark:text-slate-400"
+      aria-live="polite"
+    >
+      {dict.blog.filterEmpty}
+    </p>
     <BlogList posts={page.data} locale={locale} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} locale={locale} query={query} />
     <!--
@@ -98,6 +105,11 @@ const metadata = {
         el.removeAttribute('aria-current');
       }
     });
+
+    const emptyState = document.getElementById('lang-empty');
+    if (!emptyState) return;
+    const visibleCount = Array.from(nodes).filter((el) => el.style.display !== 'none').length;
+    emptyState.classList.toggle('hidden', visibleCount > 0);
   };
 
   applyLangFilter();
