@@ -1,64 +1,48 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getAsset } from './utils/permalinks';
+import { getLocaleBlogPermalink, getLocaleHomePermalink, getLocalePermalink, type Locale, t } from './i18n';
 
 const SITE_OWNER = 'Chikanoza'; // <-- your name/brand
-const SITE_TAGLINE = 'Personal blog & photo/video archive';
 
-export const headerData = {
+export const getHeaderData = (locale: Locale) => ({
   links: [
-    { text: 'Home', href: getPermalink('/') },
-    { text: 'Blog', href: getBlogPermalink() },
-    { text: 'About', href: getPermalink('/about') },
-    // Optional:
-    // { text: "Archive", href: getPermalink("/archive") },
-    // { text: "Photos", href: getPermalink("/photos") },
+    { text: t('nav.home', locale), href: getLocaleHomePermalink(locale) },
+    { text: t('nav.blog', locale), href: getLocaleBlogPermalink(locale) },
+    { text: t('nav.about', locale), href: getLocalePermalink(locale, '/about') },
   ],
-  actions: [
-    // Optional small CTA, or remove actions entirely
-    // { text: "Subscribe", href: getAsset("/rss.xml") },
-  ],
-};
+  actions: [],
+});
 
-export const footerData = {
+export const getFooterData = (locale: Locale) => ({
   links: [
     {
-      title: 'Site',
+      title: t('footer.site', locale),
       links: [
-        { text: 'Home', href: getPermalink('/') },
-        { text: 'Blog', href: getBlogPermalink() },
-        { text: 'About', href: getPermalink('/about') },
-        // { text: "Archive", href: getPermalink("/archive") },
+        { text: t('nav.home', locale), href: getLocaleHomePermalink(locale) },
+        { text: t('nav.blog', locale), href: getLocaleBlogPermalink(locale) },
+        { text: t('nav.about', locale), href: getLocalePermalink(locale, '/about') },
       ],
     },
     {
-      title: 'Social',
+      title: t('footer.social', locale),
       links: [
-        // Put your real links here:
         { text: 'Instagram', href: 'https://instagram.com/chikanoza' },
         { text: 'YouTube', href: 'https://youtube.com/@VyacheslavRedkin' },
       ],
     },
     {
-      title: 'Feeds',
+      title: t('footer.feeds', locale),
       links: [{ text: 'RSS', href: getAsset('/rss.xml') }],
     },
   ],
-
-  secondaryLinks: [
-    // Keep only if you actually have these pages:
-    // { text: "Terms", href: getPermalink("/terms") },
-    // { text: "Privacy", href: getPermalink("/privacy") },
-  ],
-
+  secondaryLinks: [],
   socialLinks: [
-    // Keep icons you actually use — remove the rest.
     { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: 'https://instagram.com/chikanoza' },
     { ariaLabel: 'YouTube', icon: 'tabler:brand-youtube', href: 'https://youtube.com/@VyacheslavRedkin' },
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
   ],
-
   footNote: `
-    <span class="text-muted">${SITE_TAGLINE}</span>
+    <span class="text-muted">${t('footer.tagline', locale)}</span>
     <span class="mx-2">·</span>
-    © ${new Date().getFullYear()} ${SITE_OWNER}. All rights reserved.
+    © ${new Date().getFullYear()} ${SITE_OWNER}. ${t('footer.rights', locale)}
   `,
-};
+});

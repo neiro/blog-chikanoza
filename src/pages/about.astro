@@ -3,9 +3,12 @@ import Features3 from '~/components/widgets/Features3.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
 import Layout from '~/layouts/PageLayout.astro';
+import { getDictionary, getLocaleFromUrl } from '~/i18n';
 
+const locale = getLocaleFromUrl(Astro.url);
+const dict = getDictionary(locale);
 const metadata = {
-  title: 'About — Vyacheslav Redkin',
+  title: dict.aboutPage.metadataTitle,
 };
 ---
 
@@ -13,49 +16,29 @@ const metadata = {
   <!-- Hero Widget ******************* -->
 
   <Hero
-    tagline="Backend / Platform Engineer"
+    tagline={dict.aboutPage.tagline}
     image={{
       src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
       alt: 'Workspace',
     }}
   >
     <Fragment slot="title">
-      About me <br />
-      <span class="text-accent dark:text-white">Vyacheslav Redkin</span>
+      <span set:html={dict.aboutPage.title} />
     </Fragment>
 
     <Fragment slot="subtitle">
-      I build backend systems, APIs, and self-hosted platforms — the kind that keep working after launch, when real
-      traffic and real users show up. I care about clarity, reliability, and long-term maintenance more than short-term
-      hacks. I also write travel notes and field diaries — cities at night, the small details, and the “how it actually
-      felt” parts.
+      <span set:html={dict.aboutPage.subtitle} />
     </Fragment>
   </Hero>
 
   <!-- Features3 Widget ************** -->
 
   <Features3
-    title="What I work on"
-    subtitle="Backend, platform, and infrastructure work that stays boring in production."
+    title={dict.aboutPage.workTitle}
+    subtitle={dict.aboutPage.workSubtitle}
     columns={3}
     isBeforeContent={true}
-    items={[
-      {
-        title: 'Backend services',
-        description: 'Designing and building APIs and services with clean architecture and predictable performance.',
-        icon: 'tabler:server',
-      },
-      {
-        title: 'Platform & self-hosting',
-        description: 'Dockerized environments, backups, monitoring, and systems you can actually operate.',
-        icon: 'tabler:cloud-cog',
-      },
-      {
-        title: 'Messaging & data',
-        description: 'PostgreSQL, Redis, Kafka/RabbitMQ — data that stays fast and consistent.',
-        icon: 'tabler:database',
-      },
-    ]}
+    items={dict.aboutPage.workItems}
   />
 
   <!-- Features3 Widget ************** -->
@@ -63,38 +46,7 @@ const metadata = {
   <Features3
     columns={3}
     isAfterContent={true}
-    items={[
-      {
-        title: 'Security & access',
-        description: 'JWT, API keys, access control, and sensible boundaries.',
-        icon: 'tabler:shield-check',
-      },
-      {
-        title: 'Observability',
-        description: 'Logs, metrics, and traces so failures are polite and explain themselves.',
-        icon: 'tabler:activity',
-      },
-      {
-        title: 'Automation',
-        description: 'Repeatable deploys, reliable environments, and less “works on my machine.”',
-        icon: 'tabler:robot',
-      },
-      {
-        title: 'System design',
-        description: 'Failure modes, scaling plans, and long-term maintenance.',
-        icon: 'tabler:diagram-3',
-      },
-      {
-        title: 'Pragmatism',
-        description: 'Simple beats clever — future‑me should understand it.',
-        icon: 'tabler:tool',
-      },
-      {
-        title: 'Occasional frontend',
-        description: 'Nuxt 3 when a project needs a clean, modern UI.',
-        icon: 'tabler:layout',
-      },
-    ]}
+    items={dict.aboutPage.focusItems}
     image={{
       src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
       alt: 'Work setup',
@@ -104,20 +56,20 @@ const metadata = {
   <!-- Steps2 Widget ****************** -->
 
   <Steps2
-    title="How I work"
-    subtitle="I care about the full lifecycle: deployment, monitoring, backups, and staying sane at 3 AM."
+    title={dict.aboutPage.howTitle}
+    subtitle={dict.aboutPage.howSubtitle}
     items={[
       {
-        title: 'Clarity over clever',
-        description: 'Readable, maintainable systems that won’t confuse future‑me.',
+        title: dict.aboutPage.howItems[0].title,
+        description: dict.aboutPage.howItems[0].description,
       },
       {
-        title: 'Reliability first',
-        description: 'Design for failure, add guardrails, and make ops predictable.',
+        title: dict.aboutPage.howItems[1].title,
+        description: dict.aboutPage.howItems[1].description,
       },
       {
-        title: 'Ownership mindset',
-        description: 'If it breaks, it should break politely with logs and metrics.',
+        title: dict.aboutPage.howItems[2].title,
+        description: dict.aboutPage.howItems[2].description,
       },
     ]}
   />
@@ -125,22 +77,9 @@ const metadata = {
   <!-- Steps2 Widget ****************** -->
 
   <Steps2
-    title="Outside of work"
-    subtitle="Family, travel, night cities, and the kind of hobbies that don’t require a subscription."
+    title={dict.aboutPage.lifeTitle}
+    subtitle={dict.aboutPage.lifeSubtitle}
     isReversed={true}
-    items={[
-      {
-        title: 'Travel notes',
-        description: 'I write about trips with a focus on real-world details, not brochure highlights.',
-      },
-      {
-        title: 'Family first',
-        description: 'My favorite milestones are the quiet, personal ones.',
-      },
-      {
-        title: 'Self-hosted home lab',
-        description: 'Media servers, backups, automation, and “smart” things that work offline.',
-      },
-    ]}
+    items={dict.aboutPage.lifeItems}
   />
 </Layout>

@@ -4,9 +4,10 @@ import { AstroSeo } from '@astrolib/seo';
 
 import type { Props as AstroSeoProps } from '@astrolib/seo';
 
-import { SITE, METADATA, I18N } from 'astrowind:config';
+import { SITE, METADATA } from 'astrowind:config';
 import type { MetaData } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
+import { getLocaleFromUrl, getOpenGraphLocale } from '~/i18n';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
@@ -24,6 +25,9 @@ const {
   twitter = {},
 } = Astro.props;
 
+const locale = getLocaleFromUrl(Astro.url);
+const ogLocale = getOpenGraphLocale(locale);
+
 const seoProps: AstroSeoProps = merge(
   {
     title: '',
@@ -36,7 +40,7 @@ const seoProps: AstroSeoProps = merge(
       url: canonical,
       site_name: SITE?.name,
       images: [],
-      locale: I18N?.language || 'en',
+      locale: ogLocale,
       type: 'website',
     },
     twitter: {

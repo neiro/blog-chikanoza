@@ -7,18 +7,19 @@ import PostTags from '~/components/blog/Tags.astro';
 import { APP_BLOG } from 'astrowind:config';
 import type { Post } from '~/types';
 
-import { getPermalink } from '~/utils/permalinks';
+import { getLocalePermalink, type Locale } from '~/i18n';
 import { findImage } from '~/utils/images';
 import { getFormattedDate } from '~/utils/utils';
 
 export interface Props {
   post: Post;
+  locale?: Locale;
 }
 
-const { post } = Astro.props;
+const { post, locale } = Astro.props;
 const image = (await findImage(post.image)) as ImageMetadata | undefined;
 
-const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : '';
+const link = APP_BLOG?.post?.isEnabled ? getLocalePermalink(locale ?? 'en', post.permalink, 'post') : '';
 ---
 
 <article
@@ -82,7 +83,7 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
               <>
                 {' '}
                 ·{' '}
-                <a class="hover:underline" href={getPermalink(post.category.slug, 'category')}>
+                <a class="hover:underline" href={getLocalePermalink(locale ?? 'en', post.category.slug, 'category')}>
                   {post.category.title}
                 </a>
               </>
@@ -110,7 +111,7 @@ const link = APP_BLOG?.post?.isEnabled ? getPermalink(post.permalink, 'post') : 
     {
       post.tags && Array.isArray(post.tags) ? (
         <footer class="mt-5">
-          <PostTags tags={post.tags} />
+          <PostTags tags={post.tags} locale={locale} />
         </footer>
       ) : (
         <Fragment />

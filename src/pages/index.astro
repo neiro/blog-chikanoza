@@ -8,24 +8,26 @@ import CallToAction from '~/components/widgets/CallToAction.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
-import { getPermalink } from '~/utils/permalinks';
+import { localizeUrl, getDictionary, getLocaleFromUrl } from '~/i18n';
 
-const metadata = {
-  title: 'Main page — Backend/Platform Engineer (and occasional human)',
+const locale = getLocaleFromUrl(Astro.url);
+const dict = getDictionary(locale);
+const metadataLocalized = {
+  title: dict.home.metadataTitle,
 };
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadataLocalized}>
   <Fragment slot="announcement"></Fragment>
 
   <Fragment slot="header">
     <Header
       links={[
-        { text: 'Home', href: '#hero' },
-        { text: 'About', href: '#about' },
-        { text: 'Blog', href: '#blog' },
+        { text: dict.nav.home, href: '#hero' },
+        { text: dict.nav.about, href: '#about' },
+        { text: dict.nav.blog, href: '#blog' },
       ]}
-      actions={[{ text: 'Contact me', href: '#contact' }]}
+      actions={[{ text: dict.nav.contact, href: '#contact' }]}
       isSticky
       showToggleTheme
     />
@@ -35,14 +37,12 @@ const metadata = {
 
   <Hero
     id="hero"
-    title="Vyacheslav Redkin"
-    tagline="Backend / Platform Engineer"
-    actions={[{ variant: 'primary', text: 'Get in touch', href: getPermalink('/contact#form') }]}
+    title={dict.hero.title}
+    tagline={dict.hero.tagline}
+    actions={[{ variant: 'primary', text: dict.hero.cta, href: localizeUrl('/contact#form', locale) }]}
   >
     <Fragment slot="subtitle">
-      I build backend systems, APIs, and self-hosted platforms — the kind that don’t collapse the moment someone
-      refreshes twice. <br />
-      Mostly .NET, distributed systems, automation, and pragmatic engineering (a.k.a. “boring in the best way”).
+      <span set:html={dict.hero.subtitle} />
     </Fragment>
   </Hero>
 
@@ -56,7 +56,7 @@ const metadata = {
         icon: 'tabler:server',
         callToAction: {
           target: '_blank',
-          text: 'Self-hosted lab',
+          text: dict.home.about.items.lab,
           href: '#portfolio',
         },
       },
@@ -64,7 +64,7 @@ const metadata = {
         icon: 'tabler:world',
         callToAction: {
           target: '_blank',
-          text: 'Travel & life notes',
+          text: dict.home.about.items.travel,
           href: '#blog',
         },
       },
@@ -72,7 +72,7 @@ const metadata = {
         icon: 'tabler:heart',
         callToAction: {
           target: '_blank',
-          text: 'Family first',
+          text: dict.home.about.items.family,
           href: '#about',
         },
       },
@@ -84,43 +84,18 @@ const metadata = {
     }}
   >
     <Fragment slot="content">
-      <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">About me</h2>
+      <h2 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
+        {dict.home.about.title}
+      </h2>
 
-      <p>
-        I’m a software engineer who likes building systems that stay understandable, predictable, and maintainable years
-        after launch — not just “works on my machine” levels of confidence.
-      </p>
-
-      <br />
-
-      <p>
-        I care about the full lifecycle: how a system is deployed, monitored, backed up, and lived with. If something
-        breaks at 3 AM, I prefer it to break <em>politely</em>
-        with logs, metrics, and a clear reason.
-      </p>
-
-      <br />
-
-      <p>
-        My primary stack is <strong>.NET</strong>, <strong>PostgreSQL</strong>,
-        <strong>Docker</strong>, <strong>Kafka / RabbitMQ</strong>, and <strong>Redis</strong>. On the frontend I
-        occasionally use <strong>Nuxt 3</strong> when a project needs a clean, modern UI.
-      </p>
-
-      <br />
-
-      <p>
-        Outside of programming: I’m a family person, I love traveling, exploring cities (especially at night), taking
-        photos, and building self-hosted home infrastructure — media servers, backups, automations, and “smart” things
-        that don’t require a cloud subscription to turn on a light.
-      </p>
-
-      <br />
-
-      <p>
-        I value independence, open-source, and solutions that don’t lock you in. Simple beats clever — because clever
-        has a habit of turning into “why is this here?” six months later.
-      </p>
+      {
+        dict.home.about.paragraphs.map((paragraph) => (
+          <>
+            <p set:html={paragraph} />
+            <br />
+          </>
+        ))
+      }
     </Fragment>
 
     <Fragment slot="bg">
@@ -132,18 +107,11 @@ const metadata = {
 
   <Steps
     id="resume"
-    title="Professional experience"
+    title={dict.home.experience.title}
     items={[
       {
-        title: 'Backend / Platform Engineer <br /> <span class="font-normal">Distributed systems & APIs</span>',
-        description: `
-          Designing and implementing backend services using .NET. <br />
-          Building secure APIs (JWT + API keys) for external clients. <br />
-          Working with PostgreSQL, Redis, Kafka, and RabbitMQ. <br />
-          Containerizing services with Docker and Compose. <br />
-          Designing systems with performance, observability, and long-term support in mind. <br />
-          (Also: making sure “temporary” solutions don’t become permanent… too often.)
-        `,
+        title: dict.home.experience.itemTitle,
+        description: dict.home.experience.description,
         icon: 'tabler:briefcase',
       },
     ]}
@@ -153,66 +121,28 @@ const metadata = {
   <!-- Skills -->
 
   <Features3
-    title="Skills & focus areas"
-    subtitle="Stuff I actually use and care about in real projects (not just in tweets)."
+    title={dict.home.skills.title}
+    subtitle={dict.home.skills.subtitle}
     columns={3}
     defaultIcon="tabler:point-filled"
-    items={[
-      {
-        title: '.NET & C#',
-        description: 'Modern backend development with performance and clean architecture in mind.',
-      },
-      {
-        title: 'APIs & Security',
-        description: 'JWT, API keys, access control, logging, and sane boundaries.',
-      },
-      {
-        title: 'Databases',
-        description: 'PostgreSQL modeling, indexing, migrations, and practical optimization.',
-      },
-      {
-        title: 'Docker',
-        description: 'Containerized dev and reliable self-hosted environments.',
-      },
-      {
-        title: 'Messaging',
-        description: 'Kafka/RabbitMQ for async workflows and event-driven systems.',
-      },
-      {
-        title: 'Redis',
-        description: 'Caching, streams/sets, pipelines — fast data when it matters.',
-      },
-      {
-        title: 'System design',
-        description: 'Failure modes, scalability, and operations (the real world part).',
-      },
-      {
-        title: 'Self-hosting',
-        description: 'Home lab: backups, media, monitoring, automation — without “please subscribe”.',
-      },
-      {
-        title: 'Pragmatism',
-        description: 'Simple solutions that survive production and future-you.',
-      },
-    ]}
+    items={dict.home.skills.items}
   />
 
   <!-- Portfolio -->
 
   <Content
     id="portfolio"
-    title="Selected projects"
-    subtitle="A mix of professional work, personal projects, and infrastructure experiments."
+    title={dict.home.portfolio.title}
+    subtitle={dict.home.portfolio.subtitle}
     isReversed
     items={[
       {
-        title: 'What it is:',
-        description:
-          'Backend platform with multiple services, centralized authentication, API-key management, and event-driven communication.',
+        title: dict.home.portfolio.item1Title,
+        description: dict.home.portfolio.item1Desc,
       },
       {
-        title: 'Highlights:',
-        description: 'JWT + API keys, Kafka/RabbitMQ, PostgreSQL, Redis, Docker Compose, self-hosted deployment.',
+        title: dict.home.portfolio.item2Title,
+        description: dict.home.portfolio.item2Desc,
       },
     ]}
     image={{
@@ -222,10 +152,10 @@ const metadata = {
   >
     <Fragment slot="content">
       <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        Backend platform & infrastructure
+        {dict.home.portfolio.heading}
       </h3>
       <p class="text-muted">
-        Built to be boringly reliable — because drama belongs in travel stories, not in production.
+        {dict.home.portfolio.caption}
       </p>
     </Fragment>
 
@@ -237,20 +167,19 @@ const metadata = {
   <!-- CTA -->
 
   <CallToAction
-    title="Let’s build something solid"
-    subtitle="If you value clarity, reliability, and long-term thinking — we’ll get along just fine."
-    actions={[{ variant: 'primary', text: 'Contact me', href: '#contact' }]}
+    title={dict.home.cta.title}
+    subtitle={dict.home.cta.subtitle}
+    actions={[{ variant: 'primary', text: dict.home.cta.action, href: '#contact' }]}
   />
 
   <!-- Blog -->
 
   <BlogLatestPosts
     id="blog"
-    title="Notes, experiments, and life stories"
-    information={`
-      Writing about backend engineering, self-hosting, system design,
-      travel impressions, family moments, and whatever I learned the hard way (so you don’t have to).
-    `}
+    title={dict.home.blog.title}
+    information={dict.home.blog.info}
+    linkText={dict.blog.viewAll}
+    locale={locale}
   >
     <Fragment slot="bg">
       <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>

@@ -4,15 +4,16 @@ import { APP_BLOG } from 'astrowind:config';
 import { getRelatedPosts } from '~/utils/blog';
 import BlogHighlightedPosts from '../widgets/BlogHighlightedPosts.astro';
 import type { Post } from '~/types';
-import { getBlogPermalink } from '~/utils/permalinks';
+import { getLocaleBlogPermalink, type Locale, t } from '~/i18n';
 
 export interface Props {
   post: Post;
+  locale?: Locale;
 }
 
-const { post } = Astro.props;
+const { post, locale } = Astro.props;
 
-const relatedPosts = post.tags ? await getRelatedPosts(post, 4) : [];
+const relatedPosts = post.tags ? await getRelatedPosts(post, 4, locale) : [];
 ---
 
 {
@@ -22,9 +23,10 @@ const relatedPosts = post.tags ? await getRelatedPosts(post, 4) : [];
         container:
           'pt-0 lg:pt-0 md:pt-0 intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade',
       }}
-      title="Related Posts"
-      linkText="View All Posts"
-      linkUrl={getBlogPermalink()}
+      title={t('blog.related', locale ?? 'en')}
+      linkText={t('blog.viewAll', locale ?? 'en')}
+      linkUrl={getLocaleBlogPermalink(locale ?? 'en')}
+      locale={locale}
       postIds={relatedPosts.map((post) => post.id)}
     />
   ) : null

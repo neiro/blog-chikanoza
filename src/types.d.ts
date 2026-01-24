@@ -42,6 +42,9 @@ export interface Post {
 
   /**  */
   readingTime?: number;
+
+  /** Language of the post content (for i18n filtering) */
+  lang?: 'en' | 'ru';
 }
 
 export interface Taxonomy {
