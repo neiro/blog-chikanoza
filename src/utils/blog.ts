@@ -4,7 +4,7 @@ import type { CollectionEntry } from 'astro:content';
 import type { Post } from '~/types';
 import { APP_BLOG } from 'astrowind:config';
 import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
-import { contentDefaultLocale, type Locale } from '~/i18n';
+import { contentDefaultLocale, localizePath, type Locale } from '~/i18n';
 
 const generatePermalink = async ({
   id,
@@ -183,9 +183,38 @@ export const findLatestPosts = async ({ count, locale }: { count?: number; local
 };
 
 /** */
-export const getStaticPathsBlogList = async ({ paginate }: { paginate: PaginateFunction; locale?: Locale }) => {
+export const getStaticPathsBlogList = async ({ paginate, locale }: { paginate: PaginateFunction; locale?: Locale }) => {
   if (!isBlogEnabled || !isBlogListRouteEnabled) return [];
-  return paginate(filterPostsByLocale(await fetchPosts(), undefined), {
+  const posts = filterPostsByLocale(await fetchPosts(), locale);
+
+  if (!posts.length) {
+    const basePath = localizePath(`/${BLOG_BASE || ''}`, locale ?? contentDefaultLocale);
+    return [
+      {
+        params: { blog: BLOG_BASE || undefined },
+        props: {
+          page: {
+            data: [],
+            start: 0,
+            end: 0,
+            total: 0,
+            currentPage: 1,
+            size: blogPostsPerPage || 0,
+            lastPage: 1,
+            url: {
+              current: basePath,
+              prev: undefined,
+              next: undefined,
+              first: undefined,
+              last: undefined,
+            },
+          },
+        },
+      },
+    ];
+  }
+
+  return paginate(posts, {
     params: { blog: BLOG_BASE || undefined },
     pageSize: blogPostsPerPage,
   });
@@ -203,10 +232,16 @@ export const getStaticPathsBlogPost = async () => {
 };
 
 /** */
-export const getStaticPathsBlogCategory = async ({ paginate }: { paginate: PaginateFunction; locale?: Locale }) => {
+export const getStaticPathsBlogCategory = async ({
+  paginate,
+  locale,
+}: {
+  paginate: PaginateFunction;
+  locale?: Locale;
+}) => {
   if (!isBlogEnabled || !isBlogCategoryRouteEnabled) return [];
 
-  const posts = await fetchPosts();
+  const posts = filterPostsByLocale(await fetchPosts(), locale);
   const categories = {};
   posts.map((post) => {
     if (post.category?.slug) {
@@ -227,10 +262,10 @@ export const getStaticPathsBlogCategory = async ({ paginate }: { paginate: Pagin
 };
 
 /** */
-export const getStaticPathsBlogTag = async ({ paginate }: { paginate: PaginateFunction; locale?: Locale }) => {
+export const getStaticPathsBlogTag = async ({ paginate, locale }: { paginate: PaginateFunction; locale?: Locale }) => {
   if (!isBlogEnabled || !isBlogTagRouteEnabled) return [];
 
-  const posts = await fetchPosts();
+  const posts = filterPostsByLocale(await fetchPosts(), locale);
   const tags = {};
   posts.map((post) => {
     if (Array.isArray(post.tags)) {

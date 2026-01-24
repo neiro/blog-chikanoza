@@ -5,27 +5,22 @@ import Layout from '~/layouts/PageLayout.astro';
 import BlogList from '~/components/blog/List.astro';
 import Headline from '~/components/blog/Headline.astro';
 import Pagination from '~/components/blog/Pagination.astro';
-// import PostTags from "~/components/blog/Tags.astro";
 
 import { blogListRobots, getStaticPathsBlogList } from '~/utils/blog';
-import { contentDefaultLocale, getDictionary, getLocaleFromUrl } from '~/i18n';
+import { getDictionary } from '~/i18n';
 
 export const prerender = true;
 
 export const getStaticPaths = (async ({ paginate }) => {
-  return await getStaticPathsBlogList({ paginate, locale: 'en' });
+  return await getStaticPathsBlogList({ paginate, locale: 'ru' });
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { page } = Astro.props as Props;
-const locale = getLocaleFromUrl(Astro.url);
+const locale = 'ru';
 const dict = getDictionary(locale);
 const currentPage = page.currentPage ?? 1;
-const localizedPosts = page.data.filter((post) => (post.lang ?? contentDefaultLocale) === locale);
-
-// const allCategories = await findCategories();
-// const allTags = await findTags();
 
 const metadata = {
   title: `${dict.blog.listTitle}${currentPage > 1 ? ` — ${dict.blog.pageLabel} ${currentPage}` : ''}`,
@@ -42,11 +37,7 @@ const metadata = {
 <Layout metadata={metadata}>
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
     <Headline>{dict.blog.listHeading}</Headline>
-    <BlogList posts={localizedPosts} locale={locale} />
+    <BlogList posts={page.data} locale={locale} />
     <Pagination prevUrl={page.url.prev} nextUrl={page.url.next} locale={locale} />
-    <!--
-      <PostTags tags={allCategories} class="mb-2" title="Search by Categories:" isCategory />
-      <PostTags tags={allTags}  title="Search by Tags:" />
-    -->
   </section>
 </Layout>
