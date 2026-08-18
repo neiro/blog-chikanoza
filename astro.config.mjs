@@ -5,6 +5,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import { unified } from '@astrojs/markdown-remark';
 import sitemap from '@astrojs/sitemap';
+import tailwindcss from '@tailwindcss/vite';
 import remarkGfm from 'remark-gfm';
 import icon from 'astro-icon';
 
@@ -69,6 +70,7 @@ export default defineConfig({
   },
 
   vite: {
+    plugins: [tailwindcss()],
     ssr: {
       noExternal: ['picomatch'],
     },
