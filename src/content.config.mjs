@@ -49,6 +49,7 @@ const postCollection = defineCollection({
     updateDate: z.date().optional(),
     draft: z.boolean().optional(),
     lang: z.enum(['en', 'ru']).optional(),
+    translationKey: z.string().optional(),
     title: z.string(),
     excerpt: z.string().optional(),
     image: z.string().optional(),

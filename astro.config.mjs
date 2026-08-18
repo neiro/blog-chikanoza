@@ -71,12 +71,6 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    ssr: {
-      noExternal: ['picomatch'],
-    },
-    optimizeDeps: {
-      include: ['picomatch'],
-    },
     resolve: {
       alias: {
         '~': path.resolve(__dirname, './src'),

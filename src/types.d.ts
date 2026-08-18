@@ -45,6 +45,9 @@ export interface Post {
 
   /** Language of the post content (for i18n filtering) */
   lang?: 'en' | 'ru';
+
+  /** Shared key that connects translated versions of the same post. */
+  translationKey?: string;
 }
 
 export interface Taxonomy {

@@ -10,13 +10,14 @@ import type { MetaData } from '~/types';
 
 export interface Props {
   metadata?: MetaData;
+  languageLinks?: Array<{ text: string; href: string; isActive?: boolean; ariaLabel?: string }>;
 }
 
-const { metadata } = Astro.props;
+const { metadata, languageLinks: languageLinksProp } = Astro.props;
 const locale = getLocaleFromUrl(Astro.url);
 const headerData = getHeaderData(locale);
 const footerData = getFooterData(locale);
-const languageLinks = getLocaleSwitchLinks(Astro.url);
+const languageLinks = languageLinksProp ?? getLocaleSwitchLinks(Astro.url);
 ---
 
 <Layout metadata={metadata} locale={locale}>

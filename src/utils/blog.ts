@@ -4,7 +4,14 @@ import type { CollectionEntry } from 'astro:content';
 import type { Post } from '~/types';
 import { APP_BLOG } from 'astrowind:config';
 import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
-import { contentDefaultLocale, localizePath, type Locale } from '~/i18n';
+import {
+  contentDefaultLocale,
+  getLocaleBlogPermalink,
+  getLocalePermalink,
+  locales,
+  localizePath,
+  type Locale,
+} from '~/i18n';
 
 const generatePermalink = async ({
   id,
@@ -56,6 +63,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
     author,
     draft = false,
     lang: rawLang,
+    translationKey,
     metadata = {},
   } = data;
 
@@ -100,6 +108,7 @@ const getNormalizedPost = async (post: CollectionEntry<'post'>): Promise<Post> =
 
     readingTime: remarkPluginFrontmatter?.readingTime,
     lang: (rawLang ?? contentDefaultLocale) as Locale,
+    translationKey,
   };
 };
 
@@ -223,12 +232,30 @@ export const getStaticPathsBlogList = async ({ paginate, locale }: { paginate: P
 /** */
 export const getStaticPathsBlogPost = async ({ locale }: { locale?: Locale } = {}) => {
   if (!isBlogEnabled || !isBlogPostRouteEnabled) return [];
-  const posts = filterPostsByLocale(await fetchPosts(), locale);
+  const allPosts = await fetchPosts();
+  const posts = filterPostsByLocale(allPosts, locale);
   return posts.flatMap((post) => ({
     params: {
       blog: post.permalink,
     },
-    props: { post },
+    props: {
+      post,
+      languageLinks: locales.map((targetLocale) => {
+        const translation = post.translationKey
+          ? allPosts.find(
+              (candidate) => candidate.translationKey === post.translationKey && candidate.lang === targetLocale
+            )
+          : undefined;
+
+        return {
+          text: targetLocale.toUpperCase(),
+          href: translation
+            ? getLocalePermalink(targetLocale, translation.permalink, 'post')
+            : getLocaleBlogPermalink(targetLocale),
+          isActive: targetLocale === post.lang,
+        };
+      }),
+    },
   }));
 };
 

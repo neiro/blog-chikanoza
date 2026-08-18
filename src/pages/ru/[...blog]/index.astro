@@ -25,7 +25,7 @@ export const getStaticPaths = (async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { post } = Astro.props as Props;
+const { post, languageLinks } = Astro.props as Props;
 const locale = 'ru';
 const mdxComponents = { Gallery, AutoGallery, Figure };
 
@@ -51,7 +51,7 @@ const metadata = merge(
 ) as MetaData;
 ---
 
-<Layout metadata={metadata}>
+<Layout metadata={metadata} languageLinks={languageLinks}>
   <SinglePost post={{ ...post, image: image }} url={url} locale={locale}>
     {post.Content ? <post.Content components={mdxComponents} /> : <Fragment set:html={post.content || ''} />}
   </SinglePost>
