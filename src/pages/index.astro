@@ -9,6 +9,8 @@ import Features3 from '~/components/widgets/Features3.astro';
 import Steps from '~/components/widgets/Steps.astro';
 import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
 import { localizeUrl, getDictionary, getLocaleFromUrl, getLocaleSwitchLinks } from '~/i18n';
+import nightCity from '~/assets/gallery/27-11-2025/photo_1_2026-01-24_21-35-30.jpg';
+import cityBuilding from '~/assets/gallery/27-11-2025/photo_10_2026-01-24_21-35-30.jpg';
 
 const locale = getLocaleFromUrl(Astro.url);
 const dict = getDictionary(locale);
@@ -28,7 +30,7 @@ const metadataLocalized = {
         { text: dict.nav.about, href: '#about' },
         { text: dict.nav.blog, href: '#blog' },
       ]}
-      actions={[{ text: dict.nav.contact, href: '#contact' }]}
+      actions={[{ text: dict.nav.contact, href: localizeUrl('/contact', locale) }]}
       languageLinks={languageLinks}
       isSticky
       showToggleTheme
@@ -57,7 +59,6 @@ const metadataLocalized = {
       {
         icon: 'tabler:server',
         callToAction: {
-          target: '_blank',
           text: dict.home.about.items.lab,
           href: '#portfolio',
         },
@@ -65,7 +66,6 @@ const metadataLocalized = {
       {
         icon: 'tabler:world',
         callToAction: {
-          target: '_blank',
           text: dict.home.about.items.travel,
           href: '#blog',
         },
@@ -73,15 +73,14 @@ const metadataLocalized = {
       {
         icon: 'tabler:heart',
         callToAction: {
-          target: '_blank',
           text: dict.home.about.items.family,
           href: '#about',
         },
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1518770660439-4636190af475',
-      alt: 'Workspace',
+      src: nightCity,
+      alt: locale === 'ru' ? 'Ночной город' : 'Night city',
       loading: 'eager',
     }}
   >
@@ -148,8 +147,8 @@ const metadataLocalized = {
       },
     ]}
     image={{
-      src: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c',
-      alt: 'Backend architecture',
+      src: cityBuilding,
+      alt: locale === 'ru' ? 'Городская архитектура ночью' : 'City architecture at night',
     }}
   >
     <Fragment slot="content">
@@ -171,7 +170,7 @@ const metadataLocalized = {
   <CallToAction
     title={dict.home.cta.title}
     subtitle={dict.home.cta.subtitle}
-    actions={[{ variant: 'primary', text: dict.home.cta.action, href: '#contact' }]}
+    actions={[{ variant: 'primary', text: dict.home.cta.action, href: localizeUrl('/contact', locale) }]}
   />
 
   <!-- Blog -->

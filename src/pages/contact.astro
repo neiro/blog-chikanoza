@@ -27,20 +27,26 @@ const metadata = {
         type: 'text',
         name: 'name',
         label: dict.contactPage.nameLabel,
+        required: true,
       },
       {
         type: 'email',
         name: 'email',
         label: dict.contactPage.emailLabel,
+        autocomplete: 'email',
+        required: true,
       },
     ]}
     textarea={{
       label: dict.contactPage.messageLabel,
+      required: true,
     }}
     disclaimer={{
       label: dict.contactPage.disclaimer,
+      required: true,
     }}
     description={dict.contactPage.description}
+    action="mailto:viacheslav.redkin@chikanoza.com"
   />
 
   <!-- Features2 Widget ************** -->

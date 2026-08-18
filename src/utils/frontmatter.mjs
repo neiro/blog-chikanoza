@@ -1,9 +1,8 @@
 import getReadingTime from 'reading-time';
 import { toString } from 'mdast-util-to-string';
 import { visit } from 'unist-util-visit';
-import type { RehypePlugin, RemarkPlugin } from '@astrojs/markdown-remark';
 
-export const readingTimeRemarkPlugin: RemarkPlugin = () => {
+export const readingTimeRemarkPlugin = () => {
   return function (tree, file) {
     const textOnPage = toString(tree);
     const readingTime = Math.ceil(getReadingTime(textOnPage).minutes);
@@ -14,7 +13,7 @@ export const readingTimeRemarkPlugin: RemarkPlugin = () => {
   };
 };
 
-export const responsiveTablesRehypePlugin: RehypePlugin = () => {
+export const responsiveTablesRehypePlugin = () => {
   return function (tree) {
     if (!tree.children) return;
 
@@ -25,9 +24,7 @@ export const responsiveTablesRehypePlugin: RehypePlugin = () => {
         tree.children[i] = {
           type: 'element',
           tagName: 'div',
-          properties: {
-            style: 'overflow:auto',
-          },
+          properties: { style: 'overflow:auto' },
           children: [child],
         };
 
@@ -37,7 +34,7 @@ export const responsiveTablesRehypePlugin: RehypePlugin = () => {
   };
 };
 
-export const lazyImagesRehypePlugin: RehypePlugin = () => {
+export const lazyImagesRehypePlugin = () => {
   return function (tree) {
     if (!tree.children) return;
 

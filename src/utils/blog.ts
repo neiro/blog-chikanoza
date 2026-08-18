@@ -221,9 +221,10 @@ export const getStaticPathsBlogList = async ({ paginate, locale }: { paginate: P
 };
 
 /** */
-export const getStaticPathsBlogPost = async () => {
+export const getStaticPathsBlogPost = async ({ locale }: { locale?: Locale } = {}) => {
   if (!isBlogEnabled || !isBlogPostRouteEnabled) return [];
-  return (await fetchPosts()).flatMap((post) => ({
+  const posts = filterPostsByLocale(await fetchPosts(), locale);
+  return posts.flatMap((post) => ({
     params: {
       blog: post.permalink,
     },

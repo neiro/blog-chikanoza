@@ -1,11 +1,6 @@
 ---
-import merge from 'lodash.merge';
-import { AstroSeo } from '@astrolib/seo';
-
-import type { Props as AstroSeoProps } from '@astrolib/seo';
-
 import { SITE, METADATA } from 'astrowind:config';
-import type { MetaData } from '~/types';
+import type { MetaData, MetaDataOpenGraph } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 import { getLocaleFromUrl, getOpenGraphLocale } from '~/i18n';
 
@@ -27,46 +22,50 @@ const {
 
 const locale = getLocaleFromUrl(Astro.url);
 const ogLocale = getOpenGraphLocale(locale);
-
-const seoProps: AstroSeoProps = merge(
-  {
-    title: '',
-    titleTemplate: '%s',
-    canonical: canonical,
-    noindex: true,
-    nofollow: true,
-    description: undefined,
-    openGraph: {
-      url: canonical,
-      site_name: SITE?.name,
-      images: [],
-      locale: ogLocale,
-      type: 'website',
-    },
-    twitter: {
-      cardType: openGraph?.images?.length ? 'summary_large_image' : 'summary',
-    },
-  },
-  {
-    title: METADATA?.title?.default,
-    titleTemplate: METADATA?.title?.template,
-    noindex: typeof METADATA?.robots?.index !== 'undefined' ? !METADATA.robots.index : undefined,
-    nofollow: typeof METADATA?.robots?.follow !== 'undefined' ? !METADATA.robots.follow : undefined,
-    description: METADATA?.description,
-    openGraph: METADATA?.openGraph,
-    twitter: METADATA?.twitter,
-  },
-  {
-    title: title,
-    titleTemplate: ignoreTitleTemplate ? '%s' : undefined,
-    canonical: canonical,
-    noindex: typeof robots?.index !== 'undefined' ? !robots.index : undefined,
-    nofollow: typeof robots?.follow !== 'undefined' ? !robots.follow : undefined,
-    description: description,
-    openGraph: { url: canonical, ...openGraph },
-    twitter: twitter,
-  }
-);
+const titleTemplate = ignoreTitleTemplate ? '%s' : (METADATA?.title?.template ?? '%s');
+const pageTitle = title ?? METADATA?.title?.default ?? SITE?.name ?? '';
+const resolvedTitle = titleTemplate.replace('%s', pageTitle);
+const resolvedDescription = description ?? METADATA?.description;
+const resolvedRobots = {
+  index: robots.index ?? METADATA?.robots?.index ?? true,
+  follow: robots.follow ?? METADATA?.robots?.follow ?? true,
+};
+const mergedOpenGraph = {
+  ...(METADATA?.openGraph ?? {}),
+  ...openGraph,
+  url: canonical,
+  locale: ogLocale,
+  type: openGraph.type ?? METADATA?.openGraph?.type ?? 'website',
+} as MetaDataOpenGraph;
+const resolvedOpenGraph = await adaptOpenGraphImages(mergedOpenGraph, Astro.site);
+const resolvedTwitter = {
+  ...(METADATA?.twitter ?? {}),
+  ...twitter,
+  cardType: twitter.cardType ?? (resolvedOpenGraph.images?.length ? 'summary_large_image' : 'summary'),
+};
 ---
 
-<AstroSeo {...{ ...seoProps, openGraph: await adaptOpenGraphImages(seoProps?.openGraph, Astro.site) }} />
+<title>{resolvedTitle}</title>
+<link rel="canonical" href={canonical} />
+{resolvedDescription && <meta name="description" content={resolvedDescription} />}
+<meta
+  name="robots"
+  content={`${resolvedRobots.index ? 'index' : 'noindex'},${resolvedRobots.follow ? 'follow' : 'nofollow'}`}
+/>
+<meta property="og:url" content={resolvedOpenGraph.url ?? canonical} />
+<meta property="og:site_name" content={resolvedOpenGraph.siteName ?? SITE?.name} />
+<meta property="og:locale" content={resolvedOpenGraph.locale ?? ogLocale} />
+<meta property="og:type" content={resolvedOpenGraph.type ?? 'website'} />
+{resolvedDescription && <meta property="og:description" content={resolvedDescription} />}
+{
+  resolvedOpenGraph.images?.map((image) => (
+    <>
+      <meta property="og:image" content={image.url} />
+      {image.width && <meta property="og:image:width" content={String(image.width)} />}
+      {image.height && <meta property="og:image:height" content={String(image.height)} />}
+    </>
+  ))
+}
+<meta name="twitter:card" content={resolvedTwitter.cardType ?? 'summary'} />
+{resolvedTwitter.handle && <meta name="twitter:creator" content={resolvedTwitter.handle} />}
+{resolvedTwitter.site && <meta name="twitter:site" content={resolvedTwitter.site} />}

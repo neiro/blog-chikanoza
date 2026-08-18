@@ -12,10 +12,9 @@ export interface Props {
 
 const { folder, columns = 3, lightbox = true, className = '', base = 'gallery' } = Astro.props;
 
-const modules = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/**/*.{jpg,jpeg,png,webp,avif}',
-  { eager: true }
-);
+const modules = import.meta.glob<{ default: ImageMetadata }>('/src/assets/**/*.{jpg,jpeg,png,webp,avif}', {
+  eager: true,
+});
 
 const folderPrefix = `/src/assets/${base}/${folder}/`;
 const images = Object.entries(modules)
@@ -33,11 +32,7 @@ if (!folder || images.length === 0) {
 
 const galleryId = `gallery-${folder.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`;
 const gridClass =
-  columns === 2
-    ? 'sm:grid-cols-2'
-    : columns === 4
-      ? 'sm:grid-cols-2 lg:grid-cols-4'
-      : 'sm:grid-cols-2 lg:grid-cols-3';
+  columns === 2 ? 'sm:grid-cols-2' : columns === 4 ? 'sm:grid-cols-2 lg:grid-cols-4' : 'sm:grid-cols-2 lg:grid-cols-3';
 ---
 
 <div class={`grid gap-3 ${gridClass} ${className}`}>
@@ -88,64 +83,71 @@ const gridClass =
           >
             ›
           </button>
-          <button
-            type="button"
-            data-gallery-close={galleryId}
-            class="absolute -top-10 right-0 text-white text-sm"
-          >
+          <button type="button" data-gallery-close={galleryId} class="absolute -top-10 right-0 text-white text-sm">
             Close
           </button>
           <img data-gallery-img={galleryId} class="w-full max-h-[85vh] object-contain rounded-lg" alt="" />
         </div>
       </dialog>
-      <script is:inline define:vars={{ galleryId }}>
-        (() => {
-          const dialog = document.querySelector(`dialog[data-gallery-dialog="${galleryId}"]`);
-          if (!dialog) return;
-          const img = dialog.querySelector(`img[data-gallery-img="${galleryId}"]`);
-          const closeBtn = dialog.querySelector(`[data-gallery-close="${galleryId}"]`);
-          const prevBtn = dialog.querySelector(`[data-gallery-prev="${galleryId}"]`);
-          const nextBtn = dialog.querySelector(`[data-gallery-next="${galleryId}"]`);
-          const items = Array.from(document.querySelectorAll(`[data-gallery-item="${galleryId}"]`));
-          let currentIndex = 0;
-
-          const showAt = (index) => {
-            if (!img || items.length === 0) return;
-            currentIndex = (index + items.length) % items.length;
-            const item = items[currentIndex];
-            const src = item.getAttribute('data-src');
-            const alt = item.getAttribute('data-alt') || '';
-            if (src) {
-              img.setAttribute('src', src);
-              img.setAttribute('alt', alt);
-            }
-          };
-
-          items.forEach((item, index) => {
-            item.addEventListener('click', () => {
-              showAt(index);
-              dialog.showModal();
-            });
-          });
-
-          prevBtn?.addEventListener('click', (event) => {
-            event.stopPropagation();
-            showAt(currentIndex - 1);
-          });
-          nextBtn?.addEventListener('click', (event) => {
-            event.stopPropagation();
-            showAt(currentIndex + 1);
-          });
-          closeBtn?.addEventListener('click', () => dialog.close());
-          dialog.addEventListener('click', (event) => {
-            if (event.target === dialog) dialog.close();
-          });
-          dialog.addEventListener('keydown', (event) => {
-            if (event.key === 'ArrowLeft') showAt(currentIndex - 1);
-            if (event.key === 'ArrowRight') showAt(currentIndex + 1);
-          });
-        })();
-      </script>
     </>
   )
 }
+
+<script>
+  const initGalleries = () => {
+    document.querySelectorAll('dialog[data-gallery-dialog]').forEach((dialogElement) => {
+      const dialog = dialogElement as HTMLDialogElement;
+      if (dialog.dataset.galleryInitialized === 'true') return;
+
+      const galleryId = dialog.getAttribute('data-gallery-dialog');
+      if (!galleryId) return;
+
+      const img = dialog.querySelector(`img[data-gallery-img="${galleryId}"]`) as HTMLImageElement | null;
+      const closeBtn = dialog.querySelector(`[data-gallery-close="${galleryId}"]`);
+      const prevBtn = dialog.querySelector(`[data-gallery-prev="${galleryId}"]`);
+      const nextBtn = dialog.querySelector(`[data-gallery-next="${galleryId}"]`);
+      const items = Array.from(document.querySelectorAll(`[data-gallery-item="${galleryId}"]`));
+      let currentIndex = 0;
+
+      const showAt = (index: number) => {
+        if (!img || items.length === 0) return;
+        currentIndex = (index + items.length) % items.length;
+        const item = items[currentIndex];
+        const src = item.getAttribute('data-src');
+        const alt = item.getAttribute('data-alt') || '';
+        if (src) {
+          img.setAttribute('src', src);
+          img.setAttribute('alt', alt);
+        }
+      };
+
+      items.forEach((item, index) => {
+        item.addEventListener('click', () => {
+          showAt(index);
+          dialog.showModal();
+        });
+      });
+
+      prevBtn?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        showAt(currentIndex - 1);
+      });
+      nextBtn?.addEventListener('click', (event) => {
+        event.stopPropagation();
+        showAt(currentIndex + 1);
+      });
+      closeBtn?.addEventListener('click', () => dialog.close());
+      dialog.addEventListener('click', (event) => {
+        if (event.target === dialog) dialog.close();
+      });
+      dialog.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') showAt(currentIndex - 1);
+        if (event.key === 'ArrowRight') showAt(currentIndex + 1);
+      });
+      dialog.dataset.galleryInitialized = 'true';
+    });
+  };
+
+  initGalleries();
+  document.addEventListener('astro:page-load', initGalleries);
+</script>

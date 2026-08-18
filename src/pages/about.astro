@@ -4,6 +4,8 @@ import Hero from '~/components/widgets/Hero.astro';
 import Steps2 from '~/components/widgets/Steps2.astro';
 import Layout from '~/layouts/PageLayout.astro';
 import { getDictionary, getLocaleFromUrl } from '~/i18n';
+import nightCity from '~/assets/gallery/27-11-2025/photo_1_2026-01-24_21-35-30.jpg';
+import cityDay from '~/assets/gallery/27-11-2025/photo_5_2026-01-24_21-35-30.jpg';
 
 const locale = getLocaleFromUrl(Astro.url);
 const dict = getDictionary(locale);
@@ -18,8 +20,8 @@ const metadata = {
   <Hero
     tagline={dict.aboutPage.tagline}
     image={{
-      src: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-      alt: 'Workspace',
+      src: nightCity,
+      alt: locale === 'ru' ? 'Ночной город' : 'Night city',
     }}
   >
     <Fragment slot="title">
@@ -48,8 +50,8 @@ const metadata = {
     isAfterContent={true}
     items={dict.aboutPage.focusItems}
     image={{
-      src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80',
-      alt: 'Work setup',
+      src: cityDay,
+      alt: locale === 'ru' ? 'Город днём' : 'City in daylight',
     }}
   />
 
