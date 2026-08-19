@@ -54,10 +54,14 @@ import { UI } from 'astrowind:config';
         document.body.appendChild(textarea);
         textarea.select();
         const legacyCopy = Reflect.get(document, 'execCommand');
+        let copied = false;
         if (typeof legacyCopy === 'function') {
-          legacyCopy.call(document, 'copy');
+          copied = legacyCopy.call(document, 'copy');
         }
         textarea.remove();
+        if (!copied) {
+          window.prompt('Copy post text and link:', value);
+        }
       }
     };
 
