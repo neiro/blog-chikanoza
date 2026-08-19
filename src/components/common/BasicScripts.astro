@@ -53,8 +53,10 @@ import { UI } from 'astrowind:config';
         textarea.style.opacity = '0';
         document.body.appendChild(textarea);
         textarea.select();
-        // @ts-ignore -- intentional compatibility fallback for restricted embedded browsers
-        document.execCommand('copy');
+        const legacyCopy = Reflect.get(document, 'execCommand');
+        if (typeof legacyCopy === 'function') {
+          legacyCopy.call(document, 'copy');
+        }
         textarea.remove();
       }
     };
