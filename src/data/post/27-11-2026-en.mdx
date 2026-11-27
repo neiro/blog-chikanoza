@@ -1,0 +1,88 @@
+---
+publishDate: 2026-11-27T00:00:00Z
+lang: en
+translationKey: gravity-rulebook-2026-11-27
+title: Who approved the floor being down?
+excerpt: 'Orbital gravity and the business logic that is already in the rulebook.'
+draft: false
+tags:
+  - notes
+metadata:
+  openGraph:
+    images:
+      - url: '~/assets/images/gravity-rulebook-2026-11-27.png'
+        width: 1672
+        height: 941
+---
+
+![Two programmers repair gravity on the ceiling while managers stamp the paperwork.](../../assets/images/gravity-rulebook-2026-11-27.png)
+
+_Two idiot programmers and the very important, very clever bosses. The floor is already on the ceiling. As far as the rulebook is concerned, the matter is closed._
+
+It happened in a galaxy far, far away, in a parallel universe, at half past six one Friday evening:
+
+Someone on the space station decided to improve artificial gravity. Under normal conditions, the floor was down. Under abnormal conditions, it was also preferable for the floor to stay down, but by then several departments had jurisdiction.
+
+My coworker and I fixed everything on the station that plugged into a socket, plus a few things that should never have been plugged in. Naturally, they called us in to decide who gets to change the direction of gravity after docking.
+
+I asked what to do if the dispatcher had already confirmed which way was down and the shuttle captain wanted to change it. Reject the request? Ask the dispatcher to confirm again? Or let the captain change it, but only aboard the shuttle?
+
+All three were technically sound. I could code the first before dinner. The second required finding the dispatcher. With the third, you'd want to make sure nobody had one foot in the airlock while two departments disagreed on which way was down.
+
+They asked why we hadn't done anything yet. Did they really have to explain the entire process every time? We worked here. Surely we could figure out who was responsible for what by now.
+
+I opened the rulebook. It said, “In the event of an abnormal situation, the direction of gravity shall be determined by the responsible person in light of the circumstances.”
+
+I read on. The responsible person was whoever had been assigned responsibility. Circumstances were to be considered in accordance with established procedure. The procedure called for applying the rulebook.
+
+So the circle closed. It was the only thing on the station that worked that evening without developer involvement.
+
+> _MORT-7420611359042187: If conflicting interpretations of the rulebook result in a passenger's death, lay the passenger horizontally. This resolves any disagreement about which way was down._
+
+My coworker and I wrote up all three options: who presses the button, who confirms it, and what happens to people in the airlock. We asked them to pick one. They said coming back with a decision would be helpful. Anyone could dump the choice between our options on management.
+
+I said, “I can pick one. But you'll be transporting people under that rule. Do you actually want me to sign off on it?”
+
+They explained there was nothing to sign off on. The rule was already in the rulebook.
+
+At 6:57 p.m., my coworker quietly added a fourth option to the ticket: “Keep the floor down.”
+
+At 6:58 p.m., someone commented, “Who approved that?”
+
+---
+
+Joking aside, here's a conversation I was in today. I've changed the names and turned the actual task into a cemetery gate schedule. Four of us were in the chat. Two were discussing who should decide. The other two were waiting to hear what we'd be coding.
+
+**Gromov:** Ah, got it. Fine. I'll go write the spec, yeah? Well, not a spec, but…
+
+**Shelest:** No, we should at least work out what needs doing. First, there's the gate closing time. Second, why did the caretaker go in and change it at all? And third, we already talked about this…
+
+**Gromov:** What do you mean, why did he go in there? Because…
+
+**Shelest:** No, I mean what does it affect now? You're saying he was supposed to give us the closing time when he submitted the schedule. If he got it wrong then, that's his mistake. Now you're letting him fix it after approval, which makes the system and the process more complicated.
+
+**Gromov:** What, should we just get rid of the closing time altogether? Is that the logic?
+
+**Shelest:** I'm trying to understand what purpose it serves…
+
+**Gromov:** As in, why have it at all. Fine.
+
+**Shelest:** At this particular stage, when we're already talking to the caretaker, I don't see why we need to let him change it.
+
+**Gromov:** Look, I'm not discussing this any further. I get it. You've done nothing because you don't know how. Because I have to spell out every last inch of it for you, spend more of my time, and so on. Nobody on your side is willing to get to grips with the business processes.
+
+**Shelest:** I did! Hang on. Last time I was trying to get across that with this closing time, we need to…
+
+**Gromov:** Get across what?
+
+**Shelest:** That nobody knows what to do with it once the schedule is approved!
+
+**Gromov:** Yes, but all you do is point out what's unclear and say “do it.” That's not help, you see? Help is when someone sits down, writes it out, and says, “Guys, we can do it like this or like that. Here are the options. We go this way or that way.” That's help.
+
+**Shelest:** That's exactly what I said! We can lock the time. We can send the schedule back for approval. We can let the caretaker change it himself. Any task has several parts. The first is coming up with the business logic. I put forward my options, but it's not my call which one becomes the rule. Writing the code comes second.
+
+**Gromov:** The business logic is already in place. It's in the rulebook.
+
+In cemetery terms, the rulebook says, “Where grounds exist, the gate closing time may be changed with the consent of the responsible person in accordance with established procedure.” The code needs to know what counts as grounds, who that person is, and whether to lock the gate while they're deciding. We got the same line in answer to all three questions.
+
+And this part is real. It happened in our own fucking universe. Draw your own conclusions.
